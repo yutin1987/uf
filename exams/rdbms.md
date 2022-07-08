@@ -70,6 +70,24 @@ T1 Q1) COMMIT;
 
     `MySQL、MSSQL`
 
+```
+Shared (S) locks: It permits a transaction to read a row. If transaction of one session has got this lock no transaction of other session can apply X lock on the same row. We can also say that no transaction of some other session can update that row.
+
+Exclusive (X) locks: It permits a transaction to update or delete a row. If transaction of one session has got this lock , no transaction of some other session can apply S or X lock on the same row. In a simple way we can say that other session can’t update that row but it can only read that row without asking for any lock.
+
+1. The same transaction that holds an S lock can promote the lock to an X lock. This is not a conflict.
+
+2. The SELECT in session 1 with FOR UPDATE acquires an X lock. A simple SELECT query with no locking clause specified does not need to acquire an S lock.
+
+3. Any UPDATE or DELETE needs to acquire an X lock. That's implicit.
+```
+
   - MVCC - Multi-version concurrency control
 
     `Oracle、PostgreSQL`
+
+```
+By allowing multiple versions of the same record, there is going to be less contention on reading/writing records since Readers will not block writers and Writers will not block Readers as well.
+
+Although not as intuitive as 2PL (Two-Phase Locking), MVCC is not very difficult to understand either. However, it’s very important to understand how it works, especially since data anomalies are treated differently than when locking is being employed.
+```
