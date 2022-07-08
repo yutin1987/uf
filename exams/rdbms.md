@@ -46,24 +46,30 @@ T1 Q1) COMMIT;
 ```
 
 - Can you explain the following isolation level on the following transactions?
-  - read uncommitted
 
-`Dirty Reads: may occur, Non-repeatable Reads: may occur, Lost Updates: may occur, Phantoms: may occur, Write Skews: may occur`
+  - READ COMMITTED
 
-`Read Uncommitted is the lowest isolation level. In this level, one transaction may read not yet committed changes made by other transactions, thereby allowing dirty reads. At this level, transactions are not isolated from each other.`
+  `(T1) Rollback, v1 = 10, v2 = 10`
 
-  - read committed
+  `(T1) Commit, v1 = 10, v2 = 20`
 
-`Dirty Reads: don't occur, Non-repeatable Reads: may occur, Lost Updates: may occur, Phantoms: may occur, Write Skews: may occur`
+  - READ UNCOMMITTED
 
-`This isolation level guarantees that any data read is committed at the moment it is read. Thus it does not allow dirty read. The transaction holds a read or write lock on the current row, and thus prevents other transactions from reading, updating, or deleting it.`
+  `(T1) Rollback, v1 = 20, v2 = 10`
 
-  - repeatable read
+  `(T1) Commit, v1 = 20, v2 = 20`
 
-`Dirty Reads: don't occur, Non-repeatable Reads: don't occur, Lost Updates: ?, Phantoms: ?, Write Skews: may occur`
+  - REPEATABLE READ
 
-`This is the most restrictive isolation level. The transaction holds read locks on all rows it references and writes locks on referenced rows for update and delete actions. Since other transactions cannot read, update or delete these rows, consequently it avoids non-repeatable read.`
+  `(T1) Rollback, v1 = 10, v2 = 10`
+
+  `(T1) Commit, v1 = 10, v2 = 10`
 
 - There are two main implementations for isolation. Can you explain that?
-  - SX lock (RW lock)
-  - MVCC
+  - SX lock (RW lock) - Shared-exclusive LOCK
+
+    `MySQL、MSSQL`
+
+  - MVCC - Multi-version concurrency control
+
+    `Oracle、PostgreSQL`
